@@ -12,25 +12,25 @@ The third ingredient that we need is the average number of goals scored per game
 
 The main idea is to divide this average number according to the market values of both teams to get the average number of goals per team and feed that into two Poisson distributions to determine the probabilities for each potential number of goals scored:
 
-mean_total_score <-  2.8 # https://en.wikipedia.org/wiki/UEFA_Euro_2020_statistics
+    mean_total_score <-  2.8 # https://en.wikipedia.org/wiki/UEFA_Euro_2020_statistics
 
-# https://www.transfermarkt.de/europameisterschaft-2020/teilnehmer/pokalwettbewerb/EM20
-country1 = "Switzerland"; colour1 <- "red"    ; value1 <- 0.29
-country2 = "Spain"      ; colour2 <- "orange" ; value2 <- 0.92
+    # https://www.transfermarkt.de/europameisterschaft-2020/teilnehmer/pokalwettbewerb/EM20
+    country1 = "Switzerland"; colour1 <- "red"    ; value1 <- 0.29
+    country2 = "Spain"      ; colour2 <- "orange" ; value2 <- 0.92
 
-ratio <- value1 / (value1 + value2)
-mean_goals1 <- ratio * mean_total_score
-mean_goals2 <- (1 - ratio) * mean_total_score
+    ratio <- value1 / (value1 + value2)
+    mean_goals1 <- ratio * mean_total_score
+    mean_goals2 <- (1 - ratio) * mean_total_score
 
-prob_goals1 <- dpois(0:7, mean_goals1)
-prob_goals2 <- dpois(0:7, mean_goals2)
+    prob_goals1 <- dpois(0:7, mean_goals1)
+    prob_goals2 <- dpois(0:7, mean_goals2)
 
-parbkp <- par(mfrow=c(1, 2))
-max_ylim <- max(prob_goals1, prob_goals2)
-plot(0:7, prob_goals1, type = "h", ylim = c(0, max_ylim), xlab = country1, ylab = "Probability", col = colour1, lwd = 10)
-plot(0:7, prob_goals2, type = "h", ylim = c(0, max_ylim), xlab = country2, ylab = "", col = colour2, lwd = 10)
-title(paste0(country1, " ", which.max(prob_goals1) - 1, ":", which.max(prob_goals2) - 1, " ", country2), line = -2, outer = TRUE)
-par(parbkp)
+    parbkp <- par(mfrow=c(1, 2))
+    max_ylim <- max(prob_goals1, prob_goals2)
+    plot(0:7, prob_goals1, type = "h", ylim = c(0, max_ylim), xlab = country1, ylab = "Probability", col = colour1, lwd = 10)
+    plot(0:7, prob_goals2, type = "h", ylim = c(0, max_ylim), xlab = country2, ylab = "", col = colour2, lwd = 10)
+    title(paste0(country1, " ", which.max(prob_goals1) - 1, ":", which.max(prob_goals2) - 1, " ", country2), line = -2, outer = TRUE)
+    par(parbkp)
 
 So the most probable prediction is that Spain will win this one clearly… but you never know! And apart from those hard numbers, many will root for the underdog anyway (me too because I have a special relationship with Switzerland since I did my Ph.D. there at the University of St. Gallen and still have a lot of friends from that time).
 
